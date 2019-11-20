@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  docker-mariadb:
+    image: mariadb:latest
+    ports:
+      - 3316:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=cardb
+      - MYSQL_USER=root
+    restart: always
+    networks:
+      - mynet
+  spring-boot-docker-webapp:
+    image: cardatabase-springboot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - docker-mariadb
+    ports:
+      - 8080:8080
+    restart: always
+    networks:
+      - mynet
+  react-docker-webapp:
+    image: react
+    build:
+      context: ../carfront/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
