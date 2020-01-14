@@ -67,6 +67,7 @@ class Login extends Component {
             name="password"
             placeholder="Password"
             onChange={this.handleChange}
+            onKeyPress={this.handleEnterKey()}
           />
           <br />
           <br />
@@ -82,6 +83,15 @@ class Login extends Component {
         </div>
       );
     }
+  }
+
+  handleEnterKey() {
+    return ev => {
+      if (ev.key === "Enter") {
+        this.login();
+        ev.preventDefault();
+      }
+    };
   }
 }
 
